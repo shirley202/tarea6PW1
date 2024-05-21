@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrera PDF List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        form {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        select, button {
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .semestre-title {
+            background-color: #f9f9f9;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .semestre-container {
+            border: 1px solid #ddd;
+            padding: 10px;
+            vertical-align: top;
+        }
+    </style>
+</head>
+<body>
+<form id="pdfForm" method="POST" action="{% url 'pdf_to_html' %}">
+    {% csrf_token %}
+    <select name="id_carrera" id="id_carrera">
+        <option value="">Seleccione una carrera</option>
+        {% for carrera in carreras %}
+            <option value="{{ carrera.id }}" {% if carrera.id == selected_carrera_id %}selected{% endif %}>
+                {{ carrera.nombre }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <table id="pdf_table">
+        <tbody>
+            <tr>
+                <td class="semestre-container" colspan="2">
+                    <strong>Primer Curso Primer Semestre</strong>
+                    <hr>
+                    {% for pdf in pdfs %}
+                    {% if pdf.curso in "Primero. Primer. Primero." and pdf.semestre in "Primer. Primero. Primer." %}
+                        <div>{{ pdf.materia }} <input type="checkbox" name="selected_pdf_ids" value="{{ pdf.id }}"></div>
+                    {% endif %}
+                    {% endfor %}
+                </td>
+                <td class="semestre-container" colspan="2">
+                    <strong>Primer Curso Segundo Semestre</strong>
+                    <hr>
+                    {% for pdf in pdfs %}
+                    {% if pdf.curso in "Primero. Primer. Primero." and pdf.semestre in "Segundo Segundo." %}
+                        <div>{{ pdf.materia }} <input type="checkbox" name="selected_pdf_ids" value="{{ pdf.id }}"></div>
+                    {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td class="semestre-container" colspan="2">
+                    <strong>Segundo Curso Primer Semestre</strong>
+                    <hr>
+                    {% for pdf in pdfs %}
+                    {% if pdf.curso in "Segundo. Segundo" and pdf.semestre in "Primer. Primer Tercero" %}
+                        <div>{{ pdf.materia }} <input type="checkbox" name="selected_pdf_ids" value="{{ pdf.id }}"></div>
+                    {% endif %}
+                    {% endfor %}
+                </td>
+                <td class="semestre-container" colspan="2">
+                    <strong>Segundo Curso Segundo Semestre</strong>
+                    <hr>
+                    {% for pdf in pdfs %}
+                    {% if pdf.curso in "Segundo Segundo." and pdf.semestre in "Segundo Segundo. Cuarto. Cuarto" %}
+                        <div>{{ pdf.materia }} <input type="checkbox" name="selected_pdf_ids" value="{{ pdf.id }}"></div>
+                    {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td class="semestre-container" colspan="2">
+                    <strong>Tercer Curso Primer Semestre</strong>
+                    <hr>
+                    {% for pdf in pdfs %}
+                    {% if pdf.curso in "Tercero Tercero. Tercer" and pdf.semestre in "Primer Primero. Quinto" %}
+                        <div>{{ pdf.materia }} <input type="checkbox" name="selected_pdf_ids" value="{{ pdf.id }}"></div>
+                    {% endif %}
+                    {% endfor %}
+                </td>
+                <td class="semestre-container" colspan="2">
+                    <strong>Tercer Curso Segundo Semestre</strong>
+                    <hr>
+                    {% for pdf in pdfs %}
+                    {% if pdf.curso in "Tercero Tercero. Tercer" and pdf.semestre in "Segundo. Segundo Sexto" %}
+                        <div>{{ pdf.materia }} <input type="checkbox" name="selected_pdf_ids" value="{{ pdf.id }}"></div>
+                    {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td class="semestre-container" colspan="2">
+                    <strong>Cuato Curso Primer Semestre</strong>
+                    <hr>
+                    {% for pdf in pdfs %}
+                    {% if pdf.curso in "Cuarto Cuarto." and pdf.semestre in "Primero Primero. Séptimo" %}
+                        <div>{{ pdf.materia }} <input type="checkbox" name="selected_pdf_ids" value="{{ pdf.id }}"></div>
+                    {% endif %}
+                    {% endfor %}
+                </td>
+                <td class="semestre-container" colspan="2">
+                    <strong>Cuarto Curso Segundo Semestre</strong>
+                    <hr>
+                    {% for pdf in pdfs %}
+                    {% if pdf.curso in "Cuarto Cuarto." and pdf.semestre in "Segundo. Octavo. Octavo" %}
+                        <div>{{ pdf.materia }} <input type="checkbox" name="selected_pdf_ids" value="{{ pdf.id }}"></div>
+                    {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td class="semestre-container" colspan="2">
+                    <strong>Quinto Curso Primer Semestre</strong>
+                    <hr>
+                    {% for pdf in pdfs %}
+                    {% if pdf.curso in "Quinto Quinto." and pdf.semestre in "Primero. Noveno" %}
+                        <div>{{ pdf.materia }} <input type="checkbox" name="selected_pdf_ids" value="{{ pdf.id }}"></div>
+                    {% endif %}
+                    {% endfor %}
+                </td>
+                <td class="semestre-container" colspan="2">
+                    <strong>Quinto Curso Segundo Semestre</strong>
+                    <hr>
+                    {% for pdf in pdfs %}
+                    {% if pdf.curso in "Quinto Quinto." and pdf.semestre in "Segundo Décimo. Segundo" %}
+                        <div>{{ pdf.materia }} <input type="checkbox" name="selected_pdf_ids" value="{{ pdf.id }}"></div>
+                    {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button type="submit">Imprimir Seleccionados</button>
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#id_carrera').change(function () {
+            var selectedCarreraId = $(this).val();
+            $.ajax({
+                url: window.location.pathname + '?id_carrera=' + selectedCarreraId,
+                success: function (data) {
+                    var newRows = $(data).find('#pdf_table tbody').html();
+                    $('#pdf_table tbody').html(newRows);
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
